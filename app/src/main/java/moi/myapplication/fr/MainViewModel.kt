@@ -23,6 +23,9 @@ class MainViewModel : ViewModel() {
     val filmDetail = MutableStateFlow<TmdbDetailFilm?>(null)
     val serieDetail = MutableStateFlow<TmdbDetailSerie?>(null)
     val acteurDetail = MutableStateFlow<TmdbDetailActeur?>(null)
+    val searchacteur = MutableStateFlow<List<TmdbActeur>>(listOf())
+    val searchserie = MutableStateFlow<List<TmdbSerie>>(listOf())
+
 
     val api_key = "bbd091dca96d418202d42dd57a7f58c2"
 
@@ -77,5 +80,19 @@ class MainViewModel : ViewModel() {
                 acteurDetail.value = api.detailacteur(id, api_key, "fr")
             }
         }
+    }
+    fun getSearchSerie(query: String) {
+        viewModelScope.launch {
+            val res = api.searchseries(query, api_key, "fr")
+            searchserie.value = res.results
+        }
+
+    }
+    fun getSearchActeur(query: String) {
+        viewModelScope.launch {
+            val res = api.searchacteur(query, api_key, "fr")
+            searchacteur.value = res.results
+        }
+
     }
 }

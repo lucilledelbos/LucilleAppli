@@ -43,4 +43,18 @@ interface Api {
                 @Query("language") language: String,
                 @Query("append_to_response") append_to_response: String = "credits"
         ): TmdbDetailActeur
+
+        @GET("search/person")
+        suspend fun searchacteur(
+                @Query("query") query: String,
+                @Query("api_key") api_key: String,
+                @Query("language") language: String
+        ): TmdbActeurResult
+
+        @GET("search/tv")
+        suspend fun searchseries(
+                @Query("query") query: String,
+                @Query("api_key") api_key: String,
+                @Query("language") language: String
+        ): TmdbSerieResult
 }

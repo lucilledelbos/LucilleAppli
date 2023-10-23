@@ -10,8 +10,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun Series (viewModel : MainViewModel, navController: NavController) {
-    val series by viewModel.series.collectAsState()
+fun Series (viewModel : MainViewModel, navController: NavController, series : List<TmdbSerie>) {
+
 
     LazyVerticalGrid(columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.spacedBy(16.dp),

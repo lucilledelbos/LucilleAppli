@@ -169,15 +169,22 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             composable("Series") {
+
+                                val series by viewmodel.series.collectAsState()
                                 Series(
                                     viewModel = viewmodel,
-                                    navController = navController
+                                    navController = navController,
+                                    series = series
+
                                 )
                             }
                             composable("Acteurs") {
+                                val acteurs by viewmodel.acteurs.collectAsState()
                                 Acteurs(
                                     viewModel = viewmodel,
-                                    navController = navController
+                                    navController = navController,
+                                            acteurs = acteurs
+
                                 )
                             }
                             composable(
@@ -191,6 +198,33 @@ class MainActivity : ComponentActivity() {
                                         viewmodel.getSearchMovie(it1)
                                         val movies2 by viewmodel.searchmovies.collectAsState()
                                         Films(viewmodel, navController, movies2)
+                                    }
+
+                            }
+                            composable(
+                                "acteursSearch/{searchTerm}",
+                                arguments = listOf(navArgument("searchTerm") {
+                                    type = NavType.StringType
+                                })
+                            ) {
+                                backStackEntry?.arguments?.getString("searchTerm")
+                                    ?.let { it1 ->
+                                        viewmodel.getSearchActeur(it1)
+                                        val movies2 by viewmodel.searchacteur.collectAsState()
+                                        Acteurs(viewmodel, navController, movies2)
+                                    }
+                            }
+                            composable(
+                                "seriesSearch/{searchTerm}",
+                                arguments = listOf(navArgument("searchTerm") {
+                                    type = NavType.StringType
+                                })
+                            ) {
+                                backStackEntry?.arguments?.getString("searchTerm")
+                                    ?.let { it1 ->
+                                        viewmodel.getSearchSerie(it1)
+                                        val movies2 by viewmodel.searchserie.collectAsState()
+                                        Series(viewmodel, navController, movies2)
                                     }
 
                             }
@@ -224,6 +258,7 @@ class MainActivity : ComponentActivity() {
                                     navController
                                 )
                             }
+
                         }
 
                     }

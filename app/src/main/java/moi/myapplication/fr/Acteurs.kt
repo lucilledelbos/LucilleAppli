@@ -10,8 +10,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun Acteurs (viewModel : MainViewModel, navController: NavController) {
-    val acteurs by viewModel.acteurs.collectAsState()
+fun Acteurs (viewModel : MainViewModel, navController: NavController, acteurs : List<TmdbActeur>) {
+
 
     LazyVerticalGrid(columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.spacedBy(16.dp),

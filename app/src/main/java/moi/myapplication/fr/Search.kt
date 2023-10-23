@@ -48,10 +48,10 @@ fun Search(
                     "filmsSearch/{searchTerm}" -> navController.navigate("filmsSearch/" + text.text)
 
                     "Series" -> navController.navigate("seriesSearch/" + text.text)
-                    "serieDetail/{idSerie}" -> navController.navigate("seriesSearch/" + text.text)
+                    "seriesDetails/{idSerie}" -> navController.navigate("seriesSearch/" + text.text)
 
-                    "Acteurs" -> navController.navigate("peopleSearch/" + text.text)
-                    "peopleDetail/{idPerson}" -> navController.navigate("peopleSearch/" + text.text)
+                    "Acteurs" -> navController.navigate("acteursSearch/" + text.text)
+                    "DetailsActeur/{idActeur}" -> navController.navigate("acteursSearch/" + text.text)
 
                 }
             })
