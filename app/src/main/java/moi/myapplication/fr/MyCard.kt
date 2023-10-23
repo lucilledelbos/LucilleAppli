@@ -28,7 +28,7 @@ fun MyCard (
         modifier = Modifier
             .fillMaxWidth()
             .padding(15.dp)
-            .clickable { },
+            .clickable { navController.navigate(route)},
     )  {
         Column() {
             if (imgPath != null) {

@@ -194,6 +194,36 @@ class MainActivity : ComponentActivity() {
                                     }
 
                             }
+                            composable(
+                                "filmDetail/{idMovie}",
+                                arguments = listOf(navArgument("idMovie") { type = NavType.IntType })
+                            ) {
+                                DetailsFilm(
+                                    viewmodel,
+                                    backStackEntry?.arguments?.getInt("idMovie"),
+                                    navController
+                                )
+                            }
+                            composable(
+                                "seriesDetail/{idSerie}",
+                                arguments = listOf(navArgument("idSerie") { type = NavType.IntType })
+                            ) {
+                                DetailsSerie(
+                                    viewmodel,
+                                    backStackEntry?.arguments?.getInt("idSerie"),
+                                    navController
+                                )
+                            }
+                            composable(
+                                "acteursDetail/{idActeur}",
+                                arguments = listOf(navArgument("idActeur") { type = NavType.IntType })
+                            ) {
+                                DetailsActeur(
+                                    viewmodel,
+                                    backStackEntry?.arguments?.getInt("idActeur"),
+                                    navController
+                                )
+                            }
                         }
 
                     }

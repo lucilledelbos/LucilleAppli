@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,11 +22,14 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 
 @Composable
-fun DetailsFilm(viewModel: MainViewModel, id: Int?, navController: NavController) {
-    val movieDetails by viewModel.filmDetail.collectAsState()
-    if (id != null) {
-        viewModel.getDetailsFilm(id)
-        movieDetails?.let {
+fun DetailsSerie(viewModel: MainViewModel, id: Int?, navController: NavController){
+
+    val serieDetail by viewModel.serieDetail.collectAsState()
+    if (id!=null)
+    {
+        viewModel.getDetailsSerie(id)
+
+        serieDetail?.let {
             Column(
                 modifier = Modifier
                     .verticalScroll(
@@ -37,71 +39,34 @@ fun DetailsFilm(viewModel: MainViewModel, id: Int?, navController: NavController
                 verticalArrangement = Arrangement.SpaceEvenly
             )
             {
-                Text(
-                    it.title,
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
+                Text(it.name, fontSize = 30.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                 if (it.poster_path != null) {
                     AsyncImage(
                         model = "https://image.tmdb.org/t/p/w780" + it.poster_path,
                         modifier = Modifier.size(350.dp),
                         //defaultMinSize(minHeight = 420.dp),
-                        contentDescription = "affiche",
+                        contentDescription = "afficheSerie",
                         alignment = Alignment.Center
                     )
                 }
 
-                Text(
-                    "Synopsis", color = Color.Black, fontSize = 30.sp, fontWeight = Bold
-                )
+                Text("Synopsis", color = Color.Black
+                    , fontSize = 30.sp, fontWeight = FontWeight.Bold )
                 Text(it.overview)
-                Text(
-                    "Date de sortie : " + it.release_date,
-                    color = Color.Black,
-                    fontSize = 20.sp,
-                    fontWeight = Bold
-                )
+                Text("Date de sortie : "+it.first_air_date, color = Color.Black
+                    , fontSize = 20.sp, fontWeight = FontWeight.Bold )
 
-                Row() {
+                Row(){
                     ListeGenresFilm(genres = it.genres)
                 }
                 Row() {
+                    Text("Note : ", color = Color.Black
+                        , fontSize = 30.sp, fontWeight = FontWeight.Bold )
+                    Text(""+it.vote_average +"/10", fontSize = 30.sp)
 
-                    Text(
-                        "Note : ", color = Color.Black, fontSize = 30.sp, fontWeight = Bold
-                    )
-                    Text("" + it.vote_average + "/10", fontSize = 30.sp)
                 }
-
                 Casting(it.credits.cast, navController)
-
             }
-
         }
-    }
-}
-
-@Composable
-fun ListeGenresFilm(genres: List<Genre>?) {
-    if (genres != null) {
-        Text(
-            text = "Genres :", color = Color.Black, fontSize = 20.sp, fontWeight = Bold
-        )
-
-        for (genre in genres) {
-            Text(genre.name)
-        }
-    }
-}
-
-@Composable
-fun Casting(casting: List<Cast>?, navController: NavController) {
-    if (casting != null) {
-        for (c in casting) {
-            Text("" + c.name)
-        }
-
     }
 }
