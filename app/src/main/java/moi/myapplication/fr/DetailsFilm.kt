@@ -87,7 +87,7 @@ fun DetailsFilm(viewModel: MainViewModel, id: Int?, navController: NavController
 fun ListeGenresFilm(genres: List<Genre>?) {
     if (genres != null) {
         Text(
-            text = "Genres :", color = Color.Black, fontSize = 20.sp, fontWeight = Bold
+            text = "Genres : ", color = Color.Black, fontSize = 20.sp, fontWeight = Bold
         )
 
         for (genre in genres) {
@@ -97,11 +97,11 @@ fun ListeGenresFilm(genres: List<Genre>?) {
 }
 
 @Composable
-fun Casting(casting: List<Cast>?, navController: NavController) {
+fun Casting( casting: List<TmdbActeur>? ,navController : NavController) {
     if (casting != null) {
-        for (c in casting) {
-            Text("" + c.name)
-        }
+        Column(){
+            for (c in casting){
+                MyActeursCard(tmdbActeur = c, navController = navController) }
 
-    }
+        }}
 }

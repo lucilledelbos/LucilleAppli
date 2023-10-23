@@ -128,7 +128,7 @@ data class ProductionCountry(
     val name: String
 )
 data class Credits(
-    val cast: List<Cast>,
+    val cast: List<TmdbActeur>,
     val crew: List<Crew>
 )
 data class Cast(
