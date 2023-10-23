@@ -13,8 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun Films(viewModel : MainViewModel, navController: NavController){
-    val movies by viewModel.movies.collectAsState()
+fun Films(viewModel : MainViewModel, navController: NavController, movies : List<TmdbMovie>){
 
     LazyVerticalGrid(columns = GridCells.Fixed(2),
     horizontalArrangement = Arrangement.spacedBy(16.dp),

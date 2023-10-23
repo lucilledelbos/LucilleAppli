@@ -28,7 +28,10 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -36,10 +39,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import moi.myapplication.fr.ui.theme.LucilleApplicationTheme
 
 class MainActivity : ComponentActivity() {
@@ -54,6 +59,8 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
+            val backStackEntry by navController.currentBackStackEntryAsState()
+            var recherche = remember { mutableStateOf(false) }
             LucilleApplicationTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -108,11 +115,18 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         topBar = {
+
                             if (currentDestination?.route != "Profil") {
                                 TopAppBar(
-                                    title = { Text("Recherche") },
+                                    title = {
+                                        if (!recherche.value) {
+                                            Text(text = "LuluAppli")
+                                        } else {
+                                            Search(navController)
+                                        }
+                                    },
                                     navigationIcon = {
-                                        IconButton(onClick = { }) {
+                                        IconButton(onClick = { recherche.value =! recherche.value }) {
                                             Image(
                                                 painterResource(id = R.drawable.loupe),
                                                 contentDescription = "Acteurs",
@@ -123,18 +137,13 @@ class MainActivity : ComponentActivity() {
                                     },
                                     actions = {
                                         // RowScope here, so these icons will be placed horizontally
-                                        IconButton(onClick = { /* doSomething() */ }) {
+                                        IconButton(onClick = { }) {
                                             Icon(
                                                 Icons.Filled.Favorite,
                                                 contentDescription = "Localized description"
                                             )
                                         }
-                                        IconButton(onClick = { /* doSomething() */ }) {
-                                            Icon(
-                                                Icons.Filled.Favorite,
-                                                contentDescription = "Localized description"
-                                            )
-                                        }
+
                                     }
                                 )
                             }
@@ -152,9 +161,11 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             composable("Films") {
+                                val movies by viewmodel.movies.collectAsState()
                                 Films(
                                     viewModel = viewmodel,
-                                    navController = navController
+                                    navController = navController,
+                                    movies = movies
                                 )
                             }
                             composable("Series") {
@@ -169,28 +180,41 @@ class MainActivity : ComponentActivity() {
                                     navController = navController
                                 )
                             }
+                            composable(
+                                "filmsSearch/{searchTerm}",
+                                arguments = listOf(navArgument("searchTerm") {
+                                    type = NavType.StringType
+                                })
+                            ) {
+                                backStackEntry?.arguments?.getString("searchTerm")
+                                    ?.let { it1 ->
+                                        viewmodel.getSearchMovie(it1)
+                                        val movies2 by viewmodel.searchmovies.collectAsState()
+                                        Films(viewmodel, navController, movies2)
+                                    }
 
+                            }
                         }
+
                     }
 
                 }
-
             }
+
+
+            @Composable
+            fun Clap() {
+                Image(
+                    painterResource(id = R.drawable.clap),
+                    contentDescription = "Films",
+                    modifier = Modifier
+                        .size(250.dp)
+                        .padding(20.dp)
+
+                )
+            }
+
         }
-
-
-        @Composable
-        fun Clap() {
-            Image(
-                painterResource(id = R.drawable.clap),
-                contentDescription = "Films",
-                modifier = Modifier
-                    .size(250.dp)
-                    .padding(20.dp)
-
-            )
-        }
-
     }
 }
 

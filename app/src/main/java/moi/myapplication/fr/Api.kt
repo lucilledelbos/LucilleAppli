@@ -11,4 +11,11 @@ interface Api {
 
         @GET("trending/person/week")
         suspend fun lastacteurs(@Query("api_key")api_key: String): TmdbActeurResult
+
+        @GET("search/movie")
+        suspend fun searchmovie(
+                @Query("query") query: String,
+                @Query("api_key") api_key: String,
+                @Query("language") language: String
+        ): TmdbMovieResult
 }
